@@ -1,0 +1,6 @@
+Lead ID,Full Name,Email,Phone,Company Name,Status (Before),Status (After)
+001,John Doe,john@example.com,555-1234,ABC Corp,Open,Qualified
+002,Jane Smith,jane@example.com,555-5678,XYZ Ltd,Open,Qualified
+003,Robert Brown,robert@example.com,555-9876,Tech Inc,Open,Qualified
+004,Linda White,linda@example.com,555-3456,Sales Ltd,Open,Qualified
+005,David Green,david@example.com,555-6789,Finance Co,Open,Qualified

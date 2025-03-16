@@ -1,0 +1,20 @@
+﻿# Invoice Total Calculation Flow
+
+## 📌 Overview
+This Power Automate flow **automatically calculates invoice totals** by adding tax.
+
+## 🚀 Features
+✔ Triggers when an Invoice is created  
+✔ Uses the formula: **TotalAmount = InvoiceAmount + (InvoiceAmount * TaxRate)**  
+✔ Updates the `TotalAmount` field in Dataverse  
+
+## 📂 Folder Structure
+- **src/** → Contains the exported Power Automate flow  
+- **docs/** → Setup guide, test cases, and issue documentation  
+- **media/** → Screenshots for reference  
+- **logs/** → Stores execution logs  
+
+## 🛠 Setup Guide
+1️⃣ Import **InvoiceTotalFlow.json** into Power Automate  
+2️⃣ Configure the **Dataverse Table**  
+3️⃣ Publish & **Test the Flow**  

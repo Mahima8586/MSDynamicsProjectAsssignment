@@ -1,0 +1,13 @@
+﻿# Unit Test Cases for Contact & Account Plugins
+
+## ✅ Contact Plugin: Prevent Duplicate Emails
+- Create a Contact with **email@example.com**.
+- Try creating another Contact with **email@example.com**.
+- ❌ Expected: "A contact with this email address already exists."
+
+## ✅ Account Plugin: Auto-Create Contact
+- Create a new Account with name **XYZ Corp**.
+- Expected: A Contact is automatically created with:
+  - First Name: Default
+  - Last Name: XYZ Corp
+- ✅ Check that the Contact is linked to the Account.

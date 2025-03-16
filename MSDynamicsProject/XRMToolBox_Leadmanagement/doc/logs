@@ -1,0 +1,10 @@
+﻿# Execution Logs for Bulk Update & Metadata Report
+
+## ✅ Bulk Update Logs
+[2024-06-14 09:30] Lead Data Retrieved: 50 Records.  
+[2024-06-14 09:35] Bulk Update Completed: 50 Leads updated to "Qualified".  
+[2024-06-14 09:40] Verified Changes in Dataverse.
+
+## ✅ Metadata Report Logs
+[2024-06-14 10:00] Metadata Report Generated for Leads Entity.  
+[2024-06-14 10:05] Exported as leads_metadata_report.xlsx.  

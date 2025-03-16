@@ -1,0 +1,113 @@
+{
+    "name": "Calculate_Invoice_Total",
+    "type": "Microsoft.Logic/workflows",
+    "location": "us",
+    "properties": {
+        "definition": {
+            "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowDefinition.json",
+            "actions": {
+                "GetInvoiceDetails": {
+                    "inputs": {
+                        "host": {
+                            "connection": {
+                                "name": "@parameters('$connections')['shared_commondataserviceforapps']['connectionId']"
+                            }
+                        },
+                        "method": "get",
+                        "path": "/datasets/default/tables/Invoices/items/@{triggerOutputs()?['body/invoiceid']}",
+                        "authentication": "@parameters('$authentication')"
+                    },
+                    "metadata": {
+                        "operationMetadataId": "e3e24c1b-bd50-4f7c-bc08-3df4f6792a30"
+                    },
+                    "runAfter": {},
+                    "type": "OpenApiConnection"
+                },
+                "CalculateTotalAmount": {
+                    "inputs": {
+                        "function": "add",
+                        "parameters": [
+                            "@triggerOutputs()?['body/invoiceamount']",
+                            {
+                                "function": "mul",
+                                "parameters": [
+                                    "@triggerOutputs()?['body/invoiceamount']",
+                                    "@triggerOutputs()?['body/taxrate']"
+                                ]
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "operationMetadataId": "f2cdef3d-82c9-4c98-9176-690b30b08ae3"
+                    },
+                    "runAfter": {
+                        "GetInvoiceDetails": [
+                            "Succeeded"
+                        ]
+                    },
+                    "type": "Expression"
+                },
+                "UpdateInvoiceTotalAmount": {
+                    "inputs": {
+                        "host": {
+                            "connection": {
+                                "name": "@parameters('$connections')['shared_commondataserviceforapps']['connectionId']"
+                            }
+                        },
+                        "method": "patch",
+                        "path": "/datasets/default/tables/Invoices/items/@{triggerOutputs()?['body/invoiceid']}",
+                        "body": {
+                            "TotalAmount": "@outputs('CalculateTotalAmount')"
+                        },
+                        "authentication": "@parameters('$authentication')"
+                    },
+                    "metadata": {
+                        "operationMetadataId": "c56b88fa-23b8-42c8-9635-450b6cfa7881"
+                    },
+                    "runAfter": {
+                        "CalculateTotalAmount": [
+                            "Succeeded"
+                        ]
+                    },
+                    "type": "OpenApiConnection"
+                }
+            },
+            "connectors": [
+                {
+                    "connectionId": "@parameters('$connections')['shared_commondataserviceforapps']['connectionId']",
+                    "id": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                }
+            ],
+            "triggers": {
+                "WhenInvoiceIsCreated": {
+                    "inputs": {
+                        "host": {
+                            "connection": {
+                                "name": "@parameters('$connections')['shared_commondataserviceforapps']['connectionId']"
+                            }
+                        },
+                        "method": "get",
+                        "path": "/datasets/default/tables/Invoices/items",
+                        "authentication": "@parameters('$authentication')",
+                        "query": {
+                            "filter": "CreatedOn ge @{utcNow()}",
+                            "orderby": "CreatedOn desc"
+                        }
+                    },
+                    "metadata": {
+                        "operationMetadataId": "a1a6a3d5-9b6e-4c69-9493-9355f0a45f11"
+                    },
+                    "type": "OpenApiConnectionWebhook"
+                }
+            },
+            "outputs": {}
+        },
+        "parameters": {
+            "$authentication": {},
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        }
+    }
+}
