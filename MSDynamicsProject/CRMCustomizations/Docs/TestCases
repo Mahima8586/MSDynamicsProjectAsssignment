@@ -1,0 +1,21 @@
+﻿# Test Cases for Contact & Opportunity Forms
+
+## ✅ Contact Form (RIO 1)
+### Test 1: Email Required when Preferred Contact is "Email"
+- Steps: Select "Email" → Try to save.
+- Expected: Email required, Phone optional.
+
+### Test 2: Phone Required when Preferred Contact is "Phone"
+- Steps: Select "Phone" → Try to save.
+- Expected: Phone required, Email optional.
+
+---
+
+## ✅ Opportunity Form (RIO 2)
+### Test 1: Estimated Revenue Field Disabled for Fixed Price
+- Steps: Select "Fixed Price" as Opportunity Type.
+- Expected: Estimated Revenue field is disabled.
+
+### Test 2: Estimated Revenue Auto-Calculates for Variable Price
+- Steps: Select "Variable Price" → Enter Total Units, Unit Price, Discount.
+- Expected: Estimated Revenue updates as **(Total Units * Unit Price) - Discount**.

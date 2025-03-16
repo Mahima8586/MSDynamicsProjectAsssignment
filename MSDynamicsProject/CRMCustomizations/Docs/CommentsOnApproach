@@ -1,0 +1,11 @@
+﻿# Issues with This Approach & Alternatives
+
+## 🔹 Contact Form (RIO 1)
+### ❌ Issue 1: JavaScript Validation Can Be Disabled
+- **Problem:** Users with form access can remove the script.
+- **Alternative:** Use **Business Rules** for required fields.
+
+## 🔹 Opportunity Form (RIO 2)
+### ❌ Issue 2: Estimated Revenue Calculation Only Works on UI
+- **Problem:** If records are updated via API, JavaScript won’t run.
+- **Alternative:** Use **Power Automate** to enforce server-side validation.

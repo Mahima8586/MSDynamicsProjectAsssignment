@@ -1,0 +1,17 @@
+﻿# Deployment Guide for JavaScript Customizations (RIO 1 & RIO 2)
+
+## 🔹 Contact Form Customization (RIO 1)
+1. Upload `enforceFieldRequirements.js` to Web Resources.
+2. Attach function `enforceFieldRequirements` to:
+   - OnLoad Event
+   - OnChange Event of "Preferred Method of Contact"
+3. Check "Pass execution context".
+4. Save & Publish.
+
+## 🔹 Opportunity Form Customization (RIO 2)
+1. Upload `opportunityRevenueCalculation.js` to Web Resources.
+2. Attach function `updateEstimatedRevenue` to:
+   - OnLoad Event
+   - OnChange Event of "Opportunity Type", "Total Units", "Unit Price", "Discount"
+3. Check "Pass execution context".
+4. Save & Publish.
