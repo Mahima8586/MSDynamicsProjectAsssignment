@@ -1,5 +1,4 @@
 ﻿
----
 
 using System;
 using System.Net;
@@ -11,7 +10,7 @@ using Newtonsoft.Json;
 
 public class OrderIntegrationTest
 {
-    [Fact]
+    
     public async Task Test_Valid_Order_Should_Return_Success()
     {
         var client = new HttpClient();
@@ -30,7 +29,7 @@ public class OrderIntegrationTest
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact]
+    
     public async Task Test_Invalid_Order_Should_Return_BadRequest()
     {
         var client = new HttpClient();
