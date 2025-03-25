@@ -1,42 +1,49 @@
 ﻿using System;
+using System.Security.Principal;
+using System.Web.UI.WebControls;
 using Microsoft.Xrm.Sdk;
 
-/**
- * @file CreateChildContact.cs
- * @description Plugin to create a child Contact when a new Account is created.
-
- * @version 1.0
- */
-public class CreateChildContact : IPlugin
+namespace ContactPlugins
 {
-    public void Execute(IServiceProvider serviceProvider)
+    public class CreateContactOnAccountCreate : IPlugin
     {
-        // ✅ Obtain execution context
-        IPluginExecutionContext context = (IPluginExecutionContext)serviceProvider.GetService(typeof(IPluginExecutionContext));
-
-        // ✅ Ensure the plugin executes only on Account creation
-        if (context.InputParameters.Contains("Target") && context.InputParameters["Target"] is Entity)
+        public void Execute(IServiceProvider serviceProvider)
         {
-            Entity account = (Entity)context.InputParameters["Target"];
-
-            // ✅ Get the Account Name
-            string accountName = account.Contains("name") ? account["name"].ToString() : "Unknown";
-
-            // ✅ Obtain organization service
+            //Obtain execution context
+            IPluginExecutionContext context = (IPluginExecutionContext)serviceProvider.GetService(typeof(IPluginExecutionContext));
+            
+            // Initializing logger to  Trace Log
+            ITracingService tracingService = (ITracingService)serviceProvider.GetService(typeof(ITracingService));
+            
+            // Obtain organization service
             IOrganizationServiceFactory serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
             IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
 
-            // ✅ Create new Contact linked to the Account
-            Entity contact = new Entity("contact");
-            contact["firstname"] = "Default";
-            contact["lastname"] = accountName;
-            contact["parentcustomerid"] = new EntityReference("account", account.Id); // Link contact to the account
+            try
+            {
+                // the plugin executes only on Account creation----
+                if (context.InputParameters.Contains("Target") && context.InputParameters["Target"] is Entity entity && entity.LogicalName == "account")
+                {
+                    
+                    // get the Account Name 
+                    string accountName = entity.GetAttributeValue<string>("name");
 
-            service.Create(contact);
+                    // Creating new Contact 
+                    Entity contact = new Entity("contact");
+                    contact["firstname"] = "Default";
+                    contact["lastname"] = accountName;
+                    contact["parentcustomerid"] = new EntityReference("account", entity.Id); // Link contact to account
 
-            // ✅ Log message in Plugin Trace Log
-            ITracingService tracingService = (ITracingService)serviceProvider.GetService(typeof(ITracingService));
-            tracingService.Trace("Child Contact created successfully for Account: " + accountName);
+                    service.Create(contact);
+                    // Logging message in Plugin Trace Log-
+                    tracingService.Trace("Child contact created for account: " + accountName);
+                }
+            }
+            catch (Exception ex)
+            {
+                tracingService.Trace("Plugin Exception: " + ex.Message);
+                throw new InvalidPluginExecutionException("An error occurred in CreateContactOnAccountCreate plugin.", ex);
+            }
         }
     }
 }

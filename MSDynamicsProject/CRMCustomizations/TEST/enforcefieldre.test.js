@@ -1,22 +1,7 @@
-// JavaScript source code
-/**
- * @file validation.test.js
- * @description Unit tests for enforcing field requirements in a Dynamics 365 form.
 
- */
+const { enforceFieldRequirements } = require('./validation.js'); 
 
-// We can use Jest or mock any tool to test 
-//Steps to run test 
 
-//Install Jest(if not installed)
-
-//npm install jest--save - dev
-//Run the test
-//npx jest validation.test.js
-
-const { enforceFieldRequirements } = require('./validation.js'); // Import the function
-
-// Mock formContext object
 const mockFormContext = {
     getAttribute: jest.fn(),
 };
@@ -94,7 +79,7 @@ describe('enforceFieldRequirements Function Tests', () => {
             if (fieldName === 'new_preferredmethodofcontact') {
                 return { getValue: () => 'Email' };
             }
-            return null; // Simulating missing fields
+            return null;
         });
 
         expect(() => enforceFieldRequirements(mockFormContext)).not.toThrow();

@@ -1,13 +1,13 @@
 ﻿# Plugin Registration Steps
 
-## 1️⃣ Open Plugin Registration Tool
+## 1 Open Plugin Registration Tool
 - Connect to your **Dataverse environment**.
 
-## 2️⃣ Register the Assembly
+## 2️ Register the Assembly
 - Click **Register > Register New Assembly**.
-- Upload the compiled `DynamicsCRMPlugins.dll`.
+- Upload the compiled `ClassLibrary1.dll`.
 
-## 3️⃣ Register Plugins
+## 3️ Register Plugins
 - **PreventDuplicateContact**:
   - Message: **Create**
   - Primary Entity: **Contact**
@@ -20,5 +20,5 @@
   - Execution Mode: **Asynchronous**
   - Stage: **Post-Operation**
 
-## 4️⃣ Save & Publish
+## 4️ Save & Publish
 - Click **Update** and restart Dynamics 365.

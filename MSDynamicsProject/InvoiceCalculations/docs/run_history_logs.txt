@@ -1,3 +1,0 @@
-﻿[2024-06-14 10:00] ✅ Flow Triggered: Invoice Created
-[2024-06-14 10:01] ✅ Invoice ID: 12345, Calculated TotalAmount: $1100
-[2024-06-14 10:02] ✅ Invoice Updated Successfully
