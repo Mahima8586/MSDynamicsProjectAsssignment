@@ -6,7 +6,7 @@
 - Use **API Key authentication** instead of open endpoints.
 - Store **API keys and credentials** securely in **Azure Key Vault** or **appsettings.json**.
 
-### 🔹 How to Secure API Keys:
+### How to Secure API Keys:
 - **Option 1: Use Azure Key Vault**
   - Store API secrets in **Azure Key Vault**.
   - Retrieve them dynamically inside the **Azure Function**.
@@ -27,7 +27,7 @@
 
 ---
 
-## ✅ 2. Environment Variables Instead of Hardcoded Secrets
+##  2. Environment Variables Instead of Hardcoded Secrets
 **Problem:** Hardcoded API URLs and credentials expose security risks.  
 **Solution:**
 - Use **environment variables** in **Azure Functions settings**.
@@ -35,13 +35,13 @@
 
 ---
 
-## ✅ 3. Authentication & Access Control
+##  3. Authentication & Access Control
 **Problem:** Anyone can trigger the Azure Function if it's publicly accessible.  
 **Solution:**
 - **Restrict access** using **Azure Active Directory (AAD)** authentication.
 - Enable **function-level authentication**.
 
-### 🔹 Steps to Enable Authentication:
+### Steps to Enable Authentication:
 1. Go to **Azure Portal** → Open the **Function App**.
 2. Select **Authentication**.
 3. Enable **Azure Active Directory (AAD)**.
@@ -49,12 +49,12 @@
 
 ---
 
-## ✅ 4. Use Retry Logic for API Failures
+##  4. Use Retry Logic for API Failures
 **Problem:** External API might be down or respond with errors.  
 **Solution:**
 - Implement **retry logic** with exponential backoff.
 
-### 🔹 Implementing Retry Logic in C#:
+###  Implementing Retry Logic in C#:
 ```csharp
 int retryCount = 3;
 for (int i = 0; i < retryCount; i++)

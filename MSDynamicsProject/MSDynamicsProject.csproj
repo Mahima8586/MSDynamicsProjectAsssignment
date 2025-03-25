@@ -18,18 +18,14 @@
     <Folder Include="CRMIntegration\src\MockAPI\" />
     <Folder Include="CRMIntegration\test\" />
     <Folder Include="CRMPlugins\Docs\" />
-    <Folder Include="CRMPlugins\test\" />
     <Folder Include="CRMPlugins\src\" />
-    <Folder Include="InvoiceCalculations\docs\" />
     <Folder Include="InvoiceCalculations\src\" />
-    <Folder Include="XRMToolBox_Leadmanagement\doc\" />
-    <Folder Include="XRMToolBox_Leadmanagement\test\" />
-    <Folder Include="XRMToolBox_Leadmanagement\src\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.41" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.2.0" />
+    <PackageReference Include="Microsoft.CrmSdk.CoreAssemblies" Version="9.0.2.59" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="xunit.abstractions" Version="2.0.3" />
     <PackageReference Include="xunit.assert" Version="2.9.3" />
