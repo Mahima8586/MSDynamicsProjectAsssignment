@@ -1,12 +1,11 @@
 ﻿# CI/CD Pipeline for Dynamics 365 Plugin Deployment
 
-## ✅ Step 1: Set Up a GitHub Repository
-- Push your plugin solution to GitHub.
+ 
 
-## ✅ Step 2: Configure Azure DevOps Pipeline
+##  Step 1: Configure Azure DevOps Pipeline
 - Use **Azure DevOps** to automate plugin deployment.
 
-## ✅ Step 3: Automate Build & Deployment
+##  Step 2: Automate Build & Deployment
 - Use Power Platform Build Tools to:
   1. **Compile the C# Plugin**
   2. **Deploy to Dataverse**

@@ -1,49 +1,26 @@
-﻿/**
- * @file opportunityRevenueCalculation.js
- * @description Ensures "Estimated Revenue" is disabled for Fixed Price
- * and auto-calculated for Variable Price in the Opportunity Form.
-
- * @usage Attach this script to:
- *   - OnLoad Event of the form
- *   - OnChange Events of "Opportunity Type", "Total Units", "Unit Price", "Discount"
- */
-
-function updateEstimatedRevenue(executionContext) {
-    // ✅ Ensure the function is called with execution context
-    if (!executionContext) {
-        console.error("Execution Context is missing. Ensure that this function is triggered by an event.");
-        return;
-    }
-
-    // ✅ Get the form context to access field attributes
+﻿function opportunityTypeOnChange(executionContext) {
     var formContext = executionContext.getFormContext();
+    const opportunityType = formContext.getAttribute("new_opportunitytype").getValue();
+    const estRevenueAttr = formContext.getAttribute("estimatedvalue");
+    const estRevenueCtrl = formContext.getControl("estimatedvalue");
 
-    // ✅ Retrieve the selected Opportunity Type
-    // This should be a dropdown field (Choice/Option Set)
-    var opportunityType = formContext.getAttribute("new_opportunitytype")?.getValue();
+    if (opportunityType === 1) { // Fixed Price
+        estRevenueAttr.setValue(null);
+        estRevenueCtrl.setDisabled(true);
+    } else if (opportunityType === 2) { // Variable Price
+        estRevenueCtrl.setDisabled(true);
+        let units = formContext.getAttribute("new_totalunits").getValue() || 0;
+        let unitPrice = formContext.getAttribute("new_unitprice").getValue() || 0;
+        let discount = formContext.getAttribute("new_discount").getValue() || 0;
+        let est_rev = calculateEstimatedRevenue(units, unitPrice, discount);
 
-    // ✅ Retrieve the Estimated Revenue field (Numeric field)
-    var estimatedRevenueField = formContext.getAttribute("new_estimatedrevenue");
-
-    // ✅ Retrieve other input fields required for calculation
-    var totalUnits = formContext.getAttribute("new_totalunits")?.getValue() || 0; // Default to 0 if null
-    var unitPrice = formContext.getAttribute("new_unitprice")?.getValue() || 0; // Default to 0 if null
-    var discount = formContext.getAttribute("new_discount")?.getValue() || 0; // Default to 0 if null
-
-    // ✅ Ensure Estimated Revenue field exists in the form
-    if (!estimatedRevenueField) {
-        console.error("Estimated Revenue field is missing on the form.");
-        return;
+        formContext.getAttribute("estimatedvalue").setValue(est_rev);
+    } else {
+        estRevenueCtrl.setDisabled(false);
     }
+}
 
-    // 🔹 Scenario 1: If Opportunity Type is "Fixed Price"
-    if (opportunityType === "Fixed Price") {
-        estimatedRevenueField.setDisabled(true);  // Disable the field so users cannot modify it
-        estimatedRevenueField.setValue(null);     // Clear any existing value
-        console.log("Estimated Revenue is disabled because Opportunity Type is Fixed Price.");
-    }
-    // 🔹 Scenario 2: If Opportunity Type is "Variable Price"
-    else if (opportunityType === "Variable Price") {
-        estimatedRevenueField.setDisabled(false); // Enable the field
-        var calculatedRevenue = (totalUnits * unitPrice) - discount; // Apply formula
-        estimatedRevenueF
+function calculateEstimatedRevenue(units, un_price, disc) {
+    return (units * un_price) - disc;
+
+}

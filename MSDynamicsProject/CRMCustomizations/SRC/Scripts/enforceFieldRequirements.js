@@ -6,17 +6,17 @@
     var phoneField = formContext.getAttribute("telephone1");
 
     if (preferredContact === 2)
-    { // If Email is selected
+    { 
         emailField.setRequiredLevel("required");
         phoneField.setRequiredLevel("none");
     }
     else if (preferredContact === 3)
-    { // If Phone is selected
+    { 
         phoneField.setRequiredLevel("required");
         emailField.setRequiredLevel("none");
     }
     else
-    { // If neither is selected
+    { 
         emailField.setRequiredLevel("none");
         phoneField.setRequiredLevel("none");
     }
@@ -31,6 +31,6 @@ function validateFieldsOnSave(executionContext)
     if (!email && !phone)
     {
         alert("Either Email or Phone must be filled before saving.");
-        executionContext.getEventArgs().preventDefault(); // Prevent form save
+        executionContext.getEventArgs().preventDefault(); 
     }
 }

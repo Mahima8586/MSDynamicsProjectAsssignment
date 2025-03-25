@@ -1,55 +1,52 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 
-/**
- * @file PreventDuplicateContact.cs
- * @description Plugin to prevent duplicate contacts with the same email.
-
- * @version 1.0
- */
-public class PreventDuplicateContact : IPlugin
+namespace ContactPlugins
 {
-    public void Execute(IServiceProvider serviceProvider)
+    public class PreventDuplicateContactPlugin : IPlugin
     {
-        // ✅ Obtain context for execution
-        IPluginExecutionContext context = (IPluginExecutionContext)serviceProvider.GetService(typeof(IPluginExecutionContext));
-
-        // ✅ Ensure this runs only on Contact entity Create event
-        if (context.InputParameters.Contains("Target") && context.InputParameters["Target"] is Entity)
+        public void Execute(IServiceProvider serviceProvider)
         {
-            Entity contact = (Entity)context.InputParameters["Target"];
-
-            // ✅ Check if Email exists in the form submission
-            if (!contact.Attributes.Contains("emailaddress1") || contact["emailaddress1"] == null)
-                return;
-
-            string email = contact["emailaddress1"].ToString();
-
-            // ✅ Obtain organization service
-            IOrganizationServiceFactory serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
-            IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
-
-            // ✅ Query Dataverse for existing Contacts with the same email
-            QueryExpression query = new QueryExpression("contact")
+            // Obtain context for execution
+            IPluginExecutionContext context = (IPluginExecutionContext)serviceProvider.GetService(typeof(IPluginExecutionContext));
+            //  this runs only on Contact entity Create event
+            if (context.InputParameters.Contains("Target") && context.InputParameters["Target"] is Entity entity && entity.LogicalName == "contact")
             {
-                ColumnSet = new ColumnSet("contactid"),
-                Criteria =
+                // Check if Email exists in the form 
+                if (!entity.Attributes.Contains("emailaddress1"))
+                    return;
+
+                string email = entity.GetAttributeValue<string>("emailaddress1");
+                if (string.IsNullOrEmpty(email))
+                    return;
+
+                // Obtain organization service
+                IOrganizationServiceFactory serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
+                IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
+
+                // checking email is unique ---
+                QueryExpression query = new QueryExpression("contact")
                 {
-                    Conditions =
+                    ColumnSet = new ColumnSet("emailaddress1"),
+                    Criteria = new FilterExpression
                     {
-                        new ConditionExpression("emailaddress1", ConditionOperator.Equal, email)
-                    }
+                        Conditions =
+                        {
+                            new ConditionExpression("emailaddress1", ConditionOperator.Equal, email)
+                        }
+                    },
+                    TopCount = 1
+                };
+
+                //  Throwing  error if email is duplicate -----
+                var results = service.RetrieveMultiple(query);
+                if (results.Entities.Any())
+                {
+                    throw new InvalidPluginExecutionException("A contact with this email address already exists.");
                 }
-            };
-
-            EntityCollection existingContacts = service.RetrieveMultiple(query);
-
-            // ✅ If a contact with the same email exists, throw an error
-            if (existingContacts.Entities.Count > 0)
-            {
-                throw new InvalidPluginExecutionException("A contact with this email address already exists.");
             }
         }
     }
